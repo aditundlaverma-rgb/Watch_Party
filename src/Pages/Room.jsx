@@ -3,7 +3,7 @@ import { useParams, useLocation, useNavigate } from 'react-router-dom'; // NEW: 
 import YouTube from 'react-youtube';
 import { io } from 'socket.io-client';
 
-const socket = io('http://localhost:3001');
+const socket = io('https://watch-party-server-xlz4.onrender.com');
 
 const Room = () => {
   const { roomId } = useParams();
