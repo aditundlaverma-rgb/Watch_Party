@@ -5,23 +5,21 @@ const Home = () => {
   const [username, setUsername] = useState('');
   const [roomIdToJoin, setRoomIdToJoin] = useState('');
   const navigate = useNavigate();
-
-  // Generates a simple random string for the room code
-  const generateRoomId = () => {
+ const generateRoomId = () => {
     return Math.random().toString(36).substring(2, 9);
   };
 
   const handleCreateRoom = () => {
-    if (!username.trim()) {
+if (!username.trim()) {
       alert('Please enter a username first!');
       return;
-    }
-    const newRoomId = generateRoomId();
-    // We pass the username through React Router state so the Room component can use it
+    } 
+const newRoomId = generateRoomId();
+  
     navigate(`/room/${newRoomId}`, { state: { username } });
   };
 
-  const handleJoinRoom = () => {
+ const handleJoinRoom = () => {
     if (!username.trim() || !roomIdToJoin.trim()) {
       alert('Please enter both a username and a Room ID!');
       return;
@@ -50,8 +48,7 @@ const Home = () => {
             <button
               onClick={handleCreateRoom}
               className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition font-medium"
-            >
-              Create New Room
+            >Create New Room
             </button>
           </div>
 
@@ -72,8 +69,7 @@ const Home = () => {
             <button
               onClick={handleJoinRoom}
               className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition font-medium"
-            >
-              Join
+            >Join
             </button>
           </div>
         </div>

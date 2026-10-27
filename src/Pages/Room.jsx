@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useLocation, useNavigate } from 'react-router-dom'; // NEW: Import useNavigate
+import { useParams, useLocation, useNavigate } from 'react-router-dom'; 
 import YouTube from 'react-youtube';
 import { io } from 'socket.io-client';
 
@@ -8,7 +8,7 @@ const socket = io('https://watch-party-server-xlz4.onrender.com');
 const Room = () => {
   const { roomId } = useParams();
   const location = useLocation();
-  const navigate = useNavigate(); // NEW: Used to redirect if kicked
+  const navigate = useNavigate(); 
   const username = location.state?.username || "Guest";
   
   const [videoId, setVideoId] = useState('jfKfPfyJRdk'); 
@@ -25,7 +25,7 @@ const Room = () => {
     socket.on('video_changed', (newVideoId) => setVideoId(newVideoId));
 
     socket.on('play', () => {
-      if (playerRef.current) { isReceivingSync.current = true; playerRef.current.playVideo(); }
+  if (playerRef.current) { isReceivingSync.current = true; playerRef.current.playVideo(); }
     });
     socket.on('pause', () => {
       if (playerRef.current) { isReceivingSync.current = true; playerRef.current.pauseVideo(); }
@@ -34,10 +34,10 @@ const Room = () => {
       if (playerRef.current) { isReceivingSync.current = true; playerRef.current.seekTo(time, true); }
     });
 
-    // NEW: Listen for getting kicked
+  
     socket.on('kicked', () => {
       alert("You have been removed from the room by the Host.");
-      navigate('/'); // Send them back to the home page
+      navigate('/'); 
     });
 
     return () => {
@@ -51,14 +51,14 @@ const Room = () => {
     };
   }, [roomId, username, navigate]);
 
-  const myUser = participants.find(p => p.userId === socket.id);
-  const myRole = myUser ? myUser.role : 'Participant';
-  const canControl = myRole === 'Host' || myRole === 'Moderator';
-  const isHost = myRole === 'Host'; // NEW: Check if current user is the Host
+const myUser = participants.find(p => p.userId === socket.id);
+const myRole = myUser ? myUser.role : 'Participant';
+const canControl = myRole === 'Host' || myRole === 'Moderator';
+const isHost = myRole === 'Host'; 
 
-  const handleReady = (event) => playerRef.current = event.target;
+const handleReady = (event) => playerRef.current = event.target;
 
-  const handlePlay = () => {
+ const handlePlay = () => {
     if (isReceivingSync.current) { isReceivingSync.current = false; return; }
     if (canControl) socket.emit('play', { roomId });
   };
@@ -74,7 +74,7 @@ const Room = () => {
     }
   };
 
-  const handleSyncVideo = () => {
+const handleSyncVideo = () => {
     if (!videoInput) return;
     let nextVideoId = videoInput;
     if (videoInput.includes('v=')) nextVideoId = videoInput.split('v=')[1].substring(0, 11);
@@ -82,13 +82,10 @@ const Room = () => {
     socket.emit('change_video', { roomId, videoId: nextVideoId });
     setVideoInput(''); 
   };
-
-  // NEW: Functions to emit role changes and kicks
-  const handlePromote = (targetUserId) => {
+const handlePromote = (targetUserId) => {
     socket.emit('assign_role', { roomId, targetUserId, newRole: 'Moderator' });
   };
-
-  const handleKick = (targetUserId) => {
+const handleKick = (targetUserId) => {
     socket.emit('remove_participant', { roomId, targetUserId });
   };
 
@@ -137,7 +134,7 @@ const Room = () => {
                 </span>
               </div>
               
-              {/* NEW: Host Action Buttons */}
+             
               {isHost && user.userId !== socket.id && (
                 <div className="flex gap-2 justify-end mt-1">
                   {user.role === 'Participant' && (
